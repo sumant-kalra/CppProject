@@ -1,0 +1,1 @@
+add_library(Timer STATIC ${CMAKE_CURRENT_LIST_DIR}/src/Timer.cpp)
