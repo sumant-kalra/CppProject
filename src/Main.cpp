@@ -1,30 +1,36 @@
 #define MAIN 1
-#define MEMORY_TRACKING 1
+#define TRACK_MEMORY 1
 
 #include <iostream>
 
-#if MEMORY_TRACKING
+#if TRACK_MEMORY
+static int s_heapAllocationCount = 0;
 
-static int heapAllocationsCount = 0;
-void *operator new(size_t sizeInBytes)
+void *operator new(size_t sizeBytes)
 {
-    std::cout << ++heapAllocationsCount << "\n";
-    return malloc(sizeInBytes);
+    std::cout << ++s_heapAllocationCount << "\n";
+    return malloc(sizeBytes);
 }
-
-void operator delete(void *ptr)
-{
-    std::cout << --heapAllocationsCount << "\n";
-    free(ptr);
-}
-
 #endif
 
 #if MAIN
-int main(int argc, char const *argv[])
+#include <string>
+#include <string_view>
+
+void print(const std::string &message)
 {
-    int *ptr = new int[10];
-    std::cout << ptr << "\n";
-    delete[] ptr;
+    std::cout << message << "\n";
+}
+
+int main(int argc, char *argv[])
+{
+    std::string name = "Sumant Kalra, Physicist. The goal is to be a Physicist like Richard P Feynman";
+    std::string firstName = name.substr(0, 24);
+    std::string lastName = name.substr(25, std::string::npos);
+
+    print(firstName);
+    print(lastName);
+
+    return 0;
 }
 #endif
