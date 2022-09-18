@@ -17,7 +17,7 @@ void *operator new(size_t sizeBytes)
 #include <string>
 #include <string_view>
 
-void print(const std::string &message)
+void print(const std::string_view &message)
 {
     std::cout << message << "\n";
 }
@@ -25,8 +25,8 @@ void print(const std::string &message)
 int main(int argc, char *argv[])
 {
     std::string name = "Sumant Kalra, Physicist. The goal is to be a Physicist like Richard P Feynman";
-    std::string firstName = name.substr(0, 24);
-    std::string lastName = name.substr(25, std::string::npos);
+    std::string_view firstName(name.c_str(), 24);
+    std::string_view lastName(name.c_str());
 
     print(firstName);
     print(lastName);
