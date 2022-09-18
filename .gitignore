@@ -3,5 +3,7 @@
 
 # Ada Library Information
 *.ali
-/build-release
+build-release/
+build-debug/
+.vscode/
 

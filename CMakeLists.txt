@@ -14,7 +14,8 @@ add_compile_definitions(PR_RELEASE=0)
 message("\n[DEV_INFO] This is a 'Debug' build\n")
 endif()
 
-set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wall -Werror -save-temps -std=c++17")
+#set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wall -Werror -save-temps -std=c++17")
+set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wall -save-temps -std=c++17")
 set(CMAKE_CXX_FLAGS_DEBUG "-g")
 set(CMAKE_CXX_FLAGS_RELEASE "-O3")
 
@@ -24,12 +25,11 @@ add_subdirectory(Libraries/Timer)
 
 add_executable(runApp src/Main.cpp)
 
-target_link_libraries(runApp Logger)
-target_link_libraries(runApp MemoryTrace)
-target_link_libraries(runApp Timer)
+target_link_libraries(runApp PUBLIC Logger)
+target_link_libraries(runApp PUBLIC MemoryTrace)
+target_link_libraries(runApp PUBLIC Timer)
 
-target_include_directories(runApp PUBLIC ${CMAKE_PROJECT_DIR}/Libraries/Logger/src)
-target_include_directories(runApp PUBLIC ${CMAKE_PROJECT_DIR}/Libraries/MemoryTrace/src)
-target_include_directories(runApp PUBLIC ${CMAKE_PROJECT_DIR}/Libraries/Timer/src)
-
+target_include_directories(runApp PUBLIC "${PROJECT_SOURCE_DIR}/Libraries/Logger/src")
+target_include_directories(runApp PUBLIC "${PROJECT_SOURCE_DIR}/Libraries/MemoryTrace/src")
+target_include_directories(runApp PUBLIC "${PROJECT_SOURCE_DIR}/Libraries/Timer/src")
 
