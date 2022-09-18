@@ -24,9 +24,9 @@ void print(const std::string_view &message)
 
 int main(int argc, char *argv[])
 {
-    std::string name = "Sumant Kalra, Physicist. The goal is to be a Physicist like Richard P Feynman";
-    std::string_view firstName(name.c_str(), 24);
-    std::string_view lastName(name.c_str());
+    const char *name = "Sumant Kalra, Physicist. The goal is to be a Physicist like Richard P Feynman";
+    std::string_view firstName(name, 24);
+    std::string_view lastName(name);
 
     print(firstName);
     print(lastName);
