@@ -1,1 +1,0 @@
-add_library(Logger STATIC ${CMAKE_CURRENT_LIST_DIR}/src/Logger.cpp)

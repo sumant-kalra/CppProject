@@ -1,1 +1,0 @@
-add_library(MemoryTrace STATIC ${CMAKE_CURRENT_LIST_DIR}/src/MemoryAllocationMetrics.cpp)
