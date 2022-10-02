@@ -1,4 +1,4 @@
-#define MEMORY_TRACE 1
+#define MEMORY_TRACE 0
 
 #include <iostream>
 
@@ -27,12 +27,7 @@ void operator delete(void *ptr)
 
 int main(int argc, char *argv[])
 {
-  //std::cout << "Hello World!\n";
-
-  std::string name = "Sumant Kalra is stupid again. I hope it stays our secret.\n";
-  std::cout << name << "\n";
-
-  memory_trace::MemoryTraceHeap::printMemoryMetrics();
+  std::cout << "Hello World!\n";
 
   return 0;
 }
