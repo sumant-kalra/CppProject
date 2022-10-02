@@ -4,6 +4,7 @@
 
 #if MEMORY_TRACE
 #include "MemoryTrace.h"
+
 void *operator new(size_t nBytes)
 {
   memory_trace::MemoryTraceHeap::addHeapAllocation(nBytes);
@@ -26,6 +27,12 @@ void operator delete(void *ptr)
 
 int main(int argc, char *argv[])
 {
+  //std::cout << "Hello World!\n";
+
+  std::string name = "Sumant Kalra is stupid again. I hope it stays our secret.\n";
+  std::cout << name << "\n";
+
+  memory_trace::MemoryTraceHeap::printMemoryMetrics();
 
   return 0;
 }
