@@ -5,6 +5,7 @@
 
 namespace timer
 {
+  // Abstract Timer class
   class Timer
   {
   protected:
@@ -16,6 +17,8 @@ namespace timer
     virtual ~Timer() = default;
   };
 
+  // ScopedTimer class derived from the 'Timer' abstract class
+  // Use case: Time the duration between the start and end of a scope
   class TimerScoped : public Timer
   {
   public:
@@ -27,6 +30,8 @@ namespace timer
     void getElapsedTime() override;
   };
 
+  // TimerManual class derived from the 'Timer' abstract class
+  // Use case: Time the duration between any two points
   class TimerManual : public Timer
   {
   private:
