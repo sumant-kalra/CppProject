@@ -33,10 +33,12 @@ set(CMAKE_CXX_FLAGS_DEBUG "-g")
 
 # Set up project
 add_subdirectory(Libraries/Timer)
+add_subdirectory(Libraries/MemoryTrace)
 
 add_executable(runApp src/Main.cpp)
 
-target_link_libraries(runApp PUBLIC Timer)
+target_link_libraries(runApp PUBLIC Timer
+                             PUBLIC MemoryTrace)
 
 
 
