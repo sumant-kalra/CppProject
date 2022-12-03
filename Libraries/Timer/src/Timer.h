@@ -2,6 +2,7 @@
 #define TIMER_H
 
 #include <chrono>
+#include <cmath>
 
 namespace timer
 {
@@ -10,6 +11,8 @@ namespace timer
   {
   protected:
     std::chrono::high_resolution_clock::time_point m_start;
+
+    void printElapsedTimeFromStartTime(const std::chrono::high_resolution_clock::time_point &tStart);
 
   public:
     Timer() = default;
@@ -46,6 +49,11 @@ namespace timer
     void timerInit();
     void getElapsedTime() override;
   };
+
+  inline double convertSecondsToMicroSeconds(double number)
+  {
+    return number * std::pow(10.0, 6.0);
+  }
 
 }
 
