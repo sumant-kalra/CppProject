@@ -1,0 +1,58 @@
+Usage:
+1. 1. Open <chrono> library http://www.cplusplus.com/reference/chrono/
+2. Go to http://www.cplusplus.com/reference/chrono/high_resolution_clock/now/
+3. Use now() function to create time points at the desired locations in the code - t_start, t_end; You may use auto keyword for the outcome of now()
+4. Difference between the two time points return the duration(timeTaken) between the two.
+5. std::chrono::duration<double> timeTaken = t_end - t_start; // timeTaken is duration object with period as std::ratio<1,1>
+6. timeTakenInSeconds = timeTaken.count()
+7. After this, the timeTakenInSeconds can be converted to any other period with simple arithmetic instead of using the duration_cast for casting between different duration objects
+
+//////////// Refer below for more details - though redundant /////////////////
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+1. Open <chrono> library http://www.cplusplus.com/reference/chrono/
+2. Go to http://www.cplusplus.com/reference/chrono/high_resolution_clock/now/
+3. Use this function to create time points at the desired locations in the code
+4. Difference between the two time points return the duration(dur) between the two.
+5. For the high_resolution_clock, the duration will be in nanoseconds (that is std::nano or std::ratio<1,1000000000>) 
+6. auto dur = t_end - t_start; (if we use auto for dur object, it will save the result in the same type as returned by the operation)
+7. dur.count() will return the time in nanoseconds, that is same as the below statement
+8. std::chrono::nanoseconds dur= t_end - t_start;
+9. std::chrono::nanoseconds is a typedef of std::duration<integralRef,std::ratio<1,1000000>> http://www.cplusplus.com/reference/chrono/microseconds/
+10. To convert the duration between different periods, use std::chrono::duration_cast http://www.cplusplus.com/reference/chrono/duration_cast/
+11. Duration cast is not needed, if the (t_end-t_start) is stored in an object of std::duration with floating point type as rep
+12. Duration cast is needed if the (t_end-t_start) is stored in an object of std::duration with integral type as rep as the implicit conversions are not allowed for integral rep
+13. Duration cast results in truncation if the conversion is done to a period with less precision
+14. While using duration cast, remember automatic type detection for functions
+15. Prefer floating point types as rep to avoid duration_cast, truncation and take the conversions in your hands
+16. Default std::ratio for duration template class is seconds 
+
+Note that std::chrono::nanoseconds is a typedef for std::chrono::duration not for the std::ratio

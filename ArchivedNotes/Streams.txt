@@ -1,0 +1,92 @@
+1. What are streams? Stream as the program sees it; Define a stream; Classes and Objects
+2. What is a buffered stream and flushing the stream? Need; Input; Output; Flushing scenarios
+3. Difference between /n and std::endl
+4. What is a string stream?
+5. Files: Text file vs Binary file ? Text files or binary files?
+6. Which functions shall be used for reading and writing to file?
+7. Best strategies to read and write files.
+
+
+1. What are streams in C++?
+    A) For a C++ program, input or output is all about stream of bytes.
+        It treats the incoming data from any source as a stream of bytes.
+        It processes the output data to any destination as a stream of bytes.
+    B) A stream is defined by it's two ends: (a)Source (b)Destination 
+        Depending upon the type of stream, one of the ends connects to the program.
+            For input stream, the destination is the program while the source can be keyboard or a file or any other input device.
+            For output stream, the source is the program while the destination can be monitor or a file or any other output device.
+    C) C++ provides classes to create objects representing different streams.
+            cin: Object of istream class. Source = keyboard, Destination = C++ program
+            cout: Object of ostream class. Destination = Monitor, Source = C++ program
+            ifsream: Class whose objects when created connect to a file for input. Source = file, Destination = C++ program
+            ofstream: Class whose objects when created connect to a file for output. Destination = file, Source = C++ program
+        
+2. Buffered Stream: [Buffer in the main memory, which is faster to process]
+    Helps match different rates of data processing between the program and the other end of the stream. 
+    A) Input:
+        - Input from hard drives: Programs process 1 byte at a time but hard drives transfer information in blocks of 512 bytes at a time. 
+        - Input from keyboard: Though buffer is not needed for matching the data rates as keyboard sends data 1 byte (1 char) at a time.
+                                But it helps the user to backup and correct the input before transmitting to the program.
+                                The buffer is flushed to the program as user presses enter [\n character].
+    B) Output:
+        - Output to hard drive: Program fills the buffer of 512bytes and then transmits (flushes) the entire block of data to hard drive,
+                                 clearing the buffer for the next batch of output.
+    
+    Flushing in case of impending input: when a program reaches an input statement, it flushes any output currently in the output buffer.
+    
+3. Difference between '\n' and std::endl
+    '\n' is a newline character while std::endl is a manipulator.
+    
+    '\n' adds a new line character in the stream.   [FASTER]
+    std::endl = \n + flush()                        [SLOWER]
+    
+    Note that the call to flush() is redundant as cin/cout performs flush automatically and there is rarely any need for flush 
+    when writing to files whenever a '\n' is encountered.
+
+4. String stream (sstream):
+    - Two Ends: (a)Program (b)String object
+    - Class/Object for stringstream: <sstream>: std::stringstream object for both input and output to the program.
+    
+    The string stream connects the program to a string object.
+    - The string object stores the string data inserted by the program using the insertion (<<) operator on stringstream object.
+    - The data stored in the string object is extracted by the program using the extraction (>>) operator on stringstream object.
+    
+5. Files: Text files vs Binary files
+    - Files provide both sequential and random access.
+    - Every file (including text files) is a binary file.
+    - Text files are distinguished separately from other binary formats because they are human readable, and can be opened in any text editor.
+    Text Files:
+        a) Processed as a sequence of characters.
+           For writing and reading a text file, the data needs to encoded and decoded into ASCII characters.Each digit in data is converted to
+           the ASCII format which consumes more memory than the binary representation. For example, the number 546378 is an integer that should
+           occupy 4 bytes in the disk but it will occupy 6 bytes, 1 byte for each digit in the number.
+        b) Text files are portable.
+        c) Larger in size than their binary counterpart.
+        d) Slower to process than the binary files.
+            i. Larger file size means more data to process.
+            ii.Additional processing to convert the binary to ASCII.
+    Binary Files:
+        a) Processed as a sequence of bytes.
+        b) Non-portable.
+        c) Smaller in size as compared to its text counterpart.
+        d) Faster to process than the text file.
+            i. Smaller file size means less data to process.
+            ii.No additional processing is required.
+        
+    Text file or Binary file?
+    1. Text files for portability.
+    2. Binary files for speed.
+    Prefer text files as long as their size < 1MB
+    
+6. Which functions shall be used for reading and writing to file?
+    Files provide both sequential and random access.
+    https://www.cs.uic.edu/~jbell/CourseNotes/CPlus/FileIO.html 
+    http://www.cplusplus.com/doc/tutorial/files/
+    
+7. Best strategies to read and write input to files
+
+
+
+
+    
+    

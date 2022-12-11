@@ -1,0 +1,315 @@
+MoveSemantics in nutshell:
+a) Define: MoveSemantics-noexcept
+b) std::move()
+c) Implementation (1) Go with the name (2) Take a pause after implementation and think about the problems
+    A. Move-Constructor-noexcept
+    B. Move-AssignmentOperator-noexcept
+    c. MoveFunction-noexcept
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+[PART 1: Prep]
+
+[0] Constructor Initialization List (Member Construction): 
+    - Members are constructed using their respective constructors inside the list.
+[0] Return value Optimization
+
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+[Part 2: Concepts and Implementation]
+
+[0] Example Program: 
+    "Rule of 5: Implement a String class and use it as a member in an Entity class. 
+        Entity class should have a parameterized constructor taking String."
+
+[1] Conceptual Understanding:
+    1. R-Value References Significance: 
+        - Provide a way to identify that temporary values are being passed to the function, 
+            and do something special with them like stealing their resources.
+    2. Move Semantics - noexcept: 
+        - The idea of stealing the resources from the temporary variables by using R-value references.
+        [Do not confuse among "Move Constructor", "Move Assignment" or "any function with R-Values as parameters"]
+        (a) Move Constructor
+        (b) Move Assignment Operator
+        (c) Any function with R-Values as parameters
+        
+        [Usage considerations]
+        (a) std::move() forces move semantics on variables (L-values, L-value references and R-value References) by converting them into R-Value
+            (not required if the value is an explicit r-value like -- fun(String("SK")) 
+            but required in case if it is an R-Value Reference or L-value Reference or L-value)
+
+        [Implementation considerations] (1) Go with the name (2) Take a pause and think about the problems 
+        (a) Move-Constructor-noexcept
+            0. Use noexcept, the constructor should not throw an exception for performance reasons.
+            1. "A new object is created by stealing resources from an existing object."
+            2. Stealing resources:
+                A. Redirect the resources:
+                    - this.m_pointers = other.m_pointers
+                    - this.m_variables = other.m_variables
+                B. "Hollow" the other object:
+                    - other.m_pointers = nullptr
+                    - other.m_variables = 0 (or equivalent null values)
+                C. Destructor of the class accounting for nullptr values of member pointer:
+                    - if(m_pointers)
+                        delete[] m_pointers;
+                    else
+                        delete m_pointers;
+        (b) Move-AssignmentOperator-noexcept
+            0. Use noexcept, the assignment operation should not throw any exception for performace reasons.
+            1. "An existing object is stealing resources from the another object"
+                A. Clear the resources of the existing object:
+                    - delete this.m_pointers;
+                B. Redirect the resources:
+                    - this.m_pointers = other.m_pointers
+                    - this.m_variables = other.m_variables
+                C. "Hollow" the other object:
+                    - other.m_pointers = nullptr
+                    - other.m_variables = 0 (or equivalent null values)
+                D. Safety Check that nothing should happen when string = std::move(string) that is the same object is moved to itself 
+                    because we are already deleting the resources of the existing object in the step A.
+                E. Return a reference (as per the operator= definition)
+                    - return *this;
+                F. Destructor of the class accounting for nullptr values of member pointer:
+                    - if(m_pointers)
+                        delete[] m_pointers;
+                    else
+                        delete m_pointers;  
+        (c) Any function with R-Values as parameters
+            0. Use noexcept, the function should not throw any exception for performance reasons.
+            1. Implementation depends upon the requirement.
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////   
+[Part 3: Expert Advice]
+
+[0] Rule of 3 and Rule of 5
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+
+        
+        
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+                                                            Details
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+0. Constructor Initialization list (Member Initialization with their respective constructors)
+    The Constructor initialization actually calls the corresponding constructor of the member being initialized.
+    If not used, then the members will be first created with their respective default constructors and then assigned to the value.
+    
+    For example - 
+    
+    // With Constructor Initialization
+    class Entity
+    {
+        private:
+            std::string m_name; // Default constructor of std::string will be called 
+                                // if m_name is not initialized via constructor initialization list
+                                // while creating the object
+        public:
+            Entity()
+                : m_name("Sumant") // [1] Calls the parameterized constructor of the std::string
+            {}
+            Entity(const std::string& name)
+                : m_name(name) // Calls the copy constructor of the std::string
+            {}
+    };
+    
+    // Without Constructor Initialization
+    class Entity
+    {
+        private:
+            std::string m_name; // [1] Default constructor is called since this member is not initialized via constructor initialization list
+                                //     in any of the constructor
+        public:
+            Entity()
+            {
+                m_name = std::string("Sumant"); // [2] A throw away object of std::string class is created using the parameterized constructor,
+                                                //      and assigned to m_name; 
+                                                // THIS IS WASTE AS THROW AWAY OBJECT OF THE MEMBER IS CREATED WHEN ENTITY IS CONSTRUCTED WITH
+                                                // DEFAULT CONSTRUCTOR
+                                                
+            }
+            Entity(const std::string& name)
+            {
+              m_name = name // Calls the assignment operator of the std::string
+            }
+    };
+
+/////////////////////////////////////////////// L-Value and R-Value References /////////////////////////////////////////////// 
+1. L-values and R-values
+    (a) L-values: values that have some storage location.
+    (b) R-values: temporary values with no storage location.
+    (c) L-value references: can take only L-values unless then reference is a const reference.
+    (d) R-value references: take only R-values.
+                            Help to identify if temporary values are being used. [create function overloads with one function taking only]
+                            Optimizing by stealing the resources from the R-values because they are temporary.
+    
+2. Examples:
+    (a) int var = 10;
+        int& r1 = var;      // L-Value reference
+    (b) int& r2 = 10;       // DOES NOT WORK, CAN NOT ASSIGN R-VALUE TO L-VALUE REFERENCE
+    (c) const int& r3 = 10; // R-value can be assigned to a const L-value reference.
+                            // Provided to support both L-values and R-values to be taken as reference
+                            // Works by:
+                            // int temp = 10;
+                            // const int& r3 = temp;
+    (d) int&& r4 = 10;      // R-Value reference: Can take only R-values
+    
+3.  Identify the L-values and R-values from the statements below:
+    
+    std::string firstName = "Sumant";
+    std::string lastName = "Kalra";
+    std::string fullName = firstName + lastName;
+    
+    L-Value: All the items on the left - firstName, lastName and fullName
+    R-Value: All the items on the right - "Sumant", "Kalra" and (firstName + lastName): is a temporary value created as the result of + operation.
+
+4. Function to identify if temporary values are passed, if yes, then we can do something special with them like stealing resources from them.
+    Function overloads if r-value is passed then [2] will be called    
+        void fun(const Entity& var); //[1]
+        void fun(const Entity&& var); //[2]
+   This lays the foundation of 'Move Semantics'
+
+/////////////////////////////////////////////// Move Semantics - noexcept /////////////////////////////////////////////// 
+1. Why move semantics (C++11 and higher)?
+    Steal the resources from the temporary variables, and use them where ever required.
+    (Do not confuse between Move Constructor and a function with R-values as parameters)
+    
+    Before C++11,
+    
+    Case1: Passing an object to a function that takes the responsibility of the object being passed, the only way to do so is 'Pass by Value'.
+            Since I can not create the object directly into the function where it is required, I have to pass a copy of the object by first 
+            creating the object in the current stack frame.
+            Note: Not passing it as a reference because the function is taking the responsibility. [clearing any memory etc]
+    
+    Case2: Returning an object from a function. The object created in the current stack frame, and returning the copy of the object.
+            [Not much of a problem because of Return Value Optimization: https://www.fluentcpp.com/2016/11/28/return-value-optimizations/ ]
+            Note that the code below is also optimized by compiler by calling Parameterized constructor directly for str.
+                String str = String("ABS"); // Copy Constructor is not called; Similar to Return Value Optimization
+    
+
+    [Case 1] can be a severe performance hit if the object being copied involves memory allocation on heap. NOT AN IDEAL SITUATION.
+    MoveSemantics-noexcept (C++11 and after) comes to our rescue.    
+    "Idea is we can create references that take only temporary values (R-Values) and then steal the resources from them."
+    
+2.  Move-Constructor-noexcept
+    Stealing the resources [Similar to performing shallow copy and coverting the old object to a hollow object]:
+    0. Use noexcept, the constructor should not throw an exception for performance reasons.
+    1. "A new object is created by stealing resources from an existing object."
+    2. Stealing resources:
+        A. Redirect the resources:
+            - this.m_pointers = other.m_pointers
+            - this.m_variables = other.m_variables
+        B. "Hollow" the other object:
+            - other.m_pointers = nullptr
+            - other.m_variables = 0 (or equivalent null values)
+        C. Destructor of the class accounting for nullptr values of member pointer:
+            - if(m_pointers)
+                delete[] m_pointers;
+               else
+                delete m_pointers;
+
+    [Important Point]
+        In order to call the Move Constructor or Move Function, the arguments being passed must be explicit R-Values 
+        (either type_cast to R-Value or use std::move())
+        
+    Example Program: 
+    "Implement a String class and use it as a member in an Entity class. Entity class should have a parameterized constructor taking String."
+    
+3. std::move() - <utility>
+    - Forces move semantics on variables by converting <anything> into R-value.
+    - must be used as it enforces move semantics by making calls to move constructor, move assignment operator or
+      any other function with R-value parameters explicit.
+     -not required if the value is an explicit r-value like -- fun(String("SK")) but required in case if it is an R-Value Reference.
+
+6. Move-AssignmentOperator-noexcept
+    0. Use noexcept, the assignment operation should not throw any exception for performace reasons.
+    1. "An existing object is stealing resources from the another object"
+        A. Clear the resources of the existing object:
+            - delete this.m_pointers;
+        B. Redirect the resources:
+            - this.m_pointers = other.m_pointers
+            - this.m_variables = other.m_variables
+        C. "Hollow" the other object:
+            - other.m_pointers = nullptr
+            - other.m_variables = 0 (or equivalent null values)
+        D. Safety Check that nothing should happen when string = std::move(string) that is the same object is moved to itself 
+            because we are already deleting the resources of the existing object in the step A.
+        E. Return a reference (as per the operator= definition)
+            - return *this;
+        F. Destructor of the class accounting for nullptr values of member pointer:
+            - if(m_pointers)
+                delete[] m_pointers;
+              else
+                delete m_pointers;  
+
+7. Rule of 3
+    If a class defines any of the following then it should probably explicitly define all three: 
+    (a) Destructor
+    (b) Copy constructor
+    (c) Copy assignment operator
+
+8. Rule of 5
+    If a class requires move semantics then it should probably explicitly define all five:
+    (a) Destructor
+    (b) Copy constructor
+    (c) Copy assignment operator
+    (d) Move constructor noexcept
+    (e) Move assignment operator noexcept
+    

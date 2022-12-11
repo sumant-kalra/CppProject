@@ -1,0 +1,139 @@
+Memory allocation tracking
+1. Steps(2)
+2. Challenges in overloading new and delete(3)
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+=======================================================================================================================================
+0. Tracking memory allocation on heap. Why?
+    (a) Allocation on heap is slow, so it needs to be tracked for optimization
+    (b) Better understanding of the working of the program.
+1. When does the memory get allocated on heap? 
+    Whenever new operator is called.
+    (a) Explicit calls to new 
+    (b) Any STL container that calls new to allocate memory (c) Smart pointers,...... etc
+2. How to track the heap memory allocations?
+    (a) Overloading new and delete operators, and calling the user-defined APIs from the overloads to book-keep the allocations.
+    (b) Use breakpoints in the new operator definition and callstack to track the calling methods. 
+3. Steps?
+    (a) Implement the APIs as per the requirements.
+    (b) Overload the new and delete operators
+4. Challenge in overloading new and delete for MemoryAllocationMetrics
+    (a) Keep the definitions of the new and delete operator overloads in the Main.cpp to avoid linking of the code with the original definitions.
+    (b) Memory allocation in new must be done in a way such that the size of the allocated memory can be retrived later in delete. Allocate an extra memory block in the front to store the size. All the memory allocated (including the extra memory) by new must be freed with delete.
+    (c) If the pointer returned by the new is not used then the compiler optimizes the code and does not allocate memory at all.
+ 
+ Note that it is a quick and dirty way. Prefer profiling tools such as valgrind or the tools provided by the MSVS for better scalability.   
+=======================================================================================================================================    
+    
+   
+   
+   
+   
+   
+   
+    
+    
+    
+    
+
+A. Overloading new and delete keyword
+
+    https://interviewsansar.com/how-does-free-know-amount-of-memory-to-deallocate/
+    : Actual implementation is compiler specific
+        - Implementation 1: Marking Mechanism to free memory in C/C++
+        - Implementation 2: Extra bytes allocation mechanism to free memory in C/C++
+        
+    https://stackoverflow.com/questions/2571265/overloading-delete-and-retrieving-size
+    Overloading new and delete keyword for 'memory tracking'
+        Preferred way: "allocate more memory than neccessary and store the size information there"
+        Since the retrieval of allocation size is implementation specific, it is better to explicitly allocate extra memory bytes, 
+        and store the size information in the extra bytes. 
+        The number stored will only be used for memory tracking since the compiler has it's own implementation to identify the bytes to be freed.
+    
+
+    "allocate more memory than neccessary and store the size information there"
+    ----------------------------------------------------------------------------
+    
+    Overloading new operator:
+        void* operator new (size_t sizeInBytes)
+        {
+            std::cout<<"Allocating "<<sizeInBytes<<" Bytes\n";
+            
+            // Allocating extra bytes
+            size_t totalBytesToAllocate = sizeof(size_t) + sizeInBytes;
+            void* ptr = malloc(totalBytesToAllocate);
+            
+            // Storing the size information in the extra bytes allocated in the front
+            size_t* ptr1 = (size_t*) ptr;
+            ptr1[0] = sizeInBytes;
+            
+            return (void*)&ptr1[1];
+
+        }
+    
+    Overloading delete operator:
+        void operator delete (void* ptr)
+        {
+            // Retrieve the size information
+            size_t* ptr1 = (size_t*) ptr;
+            size_t sizeInBytes = ptr1[-1];
+            
+            std::cout << "Deallocating "<< sizeInBytes <<" Bytes \n";
+            
+            // Free the memory allocated originally
+            free((void*)&ptr1[-1]);
+        }
+    
+
+B. Implement 'MemoryAllocationMetrics'
+    Implement 'MemoryAllocationMetrics' Class for tracking allocation and deallocation of memory by overloading new and delete operators
+    
+    Design: 
+        MemoryAllocationMetrics : kind of a Health Tracker watch 
+        -- Book-keeping APIs for new and delete: 
+            called from new and delete to record the changes in the static variables of the class
+        -- Current state API: 
+            Print the current state of the MemoryAllocationMetrics
+    
+    1. Why? (a) Allocation on heap is slow, so it needs to be tracked for optimization; (b) Better understanding of the working of the program.
+    2. How to use? Overload the new and delete operator; Use breakpoints in the operator definition; Look at the call stack
+    3. When does new get called? (a) Explicit calls to new (b) Any STL container that calls new to allocate memory (c) Smart pointers,...... etc
+
+C. Linking with new and delete in UNIX
+    On most UNIX platforms (unlike on Win32 and AIX),
+    all symbol references by default bind to the first definition of the symbol visible to the runtime loader.
+    
+    There are ways to modify the linker behaviour, but it will impact all the libraries. So, better to design interfaces carefully.
+    Solution:
+        "Keep the definitions of the new and delete overloads in Main.cpp"
+        - static declaration: DOES NOT WORK for new and delete operators
+        - template : DOES NOT WORK for new and delete operators
+    
+    https://stackoverflow.com/questions/1054697/why-isnt-my-new-operator-called
+    
+Implementation Links:
+    https://github.com/sumant-kalra/Cpp/blob/master/Libraries/memoryTrace/MemoryAllocationMetrics.h 
+    https://github.com/sumant-kalra/Cpp/blob/master/src/Main.cpp

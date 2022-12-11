@@ -6,4 +6,4 @@
 build-release/
 build-debug/
 .vscode/
-
+.DS_Store

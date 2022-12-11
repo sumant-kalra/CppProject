@@ -1,0 +1,19 @@
+The only difference between struct and class is 
+    struct: everything is public by default
+    class: everything is private by default
+    
+The C-struct can be initialized by uniform initialization.
+    C-struct:
+        1. Only member variables.
+        2. All the members as public.
+        If anything else is defined, then it no longer remains a C-struct (Use the OOP concepts in that case)
+
+
+///////////////////////////// Old way of thinking ///////////////////////////////////////////////////////////////////////////////////////
+Pure struct:
+	It has no constructor defined.
+	If no constructor is defined it has -Default Constructor -Copy constructor [Do not confuse uniform initialization as Parameterized constr]
+	If any constructor is defined, the behaviour becomes similar to class that is :
+		-Default constructor if no constructor is defined
+		-If any constructor is defined, then no default constructor
+		-No default parameterized constructor is defined
