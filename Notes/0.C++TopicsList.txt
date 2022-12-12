@@ -1,0 +1,101 @@
+0. Performance Optimization with C++:
+    A. Tooling for benchmarking and tracking:
+        0. Logger class
+        1. Timer class
+        2. Trace Memory Allocations - Easy way
+        3. Visual Benchmarking
+        4. Profiling
+    B. Performance optimization aspects:
+        1. Avoid undesired copies
+            1. Pass objects by reference
+            2. Member initializer list
+            3. std::vector usage:	a)reserve b)emplace_back
+            4. Return value optimization
+        2. Avoid undesired heap allocations
+            1. Stack vs heap allocations
+            2. std::arrays vs std::vector
+            3. Move semantics
+            4. Faster strings - std::string and std::string_view class
+        3. Cache friendly code
+            1. Heap allocation - memory fragmentation
+            2. Multidimensional arrays 
+        4. Parallelism
+            4.1 Multithreading
+                4.1.1 std::threads
+                4.1.2 c++ run faster with std::async
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+I.  C++ Must:
+    1. Compilation and Linking: How C++ Works; Define Compilation process; Compilation (3 steps); Linker (3 kinds of errors)    [Cherno]
+    2. Programming Concepts: Variables, Datatypes; Functions; Headers; Conditions, branches; Loops; ControlFlow, Pointers; References   [Cherno] 
+    3. Enums: Enum and Enum Class [Cherno]
+    4. Macros(SymbolicConstants or SymbolicNames): Macros-LoggingSystem: Debug, Release; Definining Macros in IDE/Build System; __LINE__, __FILE__, #x [cplusplus.com]; BreakpointWithACode; MacrosToIdentifyOS;    [Cherno] 
+    5. Namespaces: auto keyword; using namespace std; Namespaces    [Cherno]
+    6. const keyword: const in C++; mutable, Lambda    [Cherno]
+    7. Arrow operator: -> operator  [Cherno]
+    8. Return-Pass: ReturnType-PassBy   [returnType-passBy-L.docx]
+    9. Arrays: ArraysInC++; StaticArrays; DynamicArrays   [Cherno]
+    10. Strings: Strings; StringLiterals    [Cherno]
+    11. Object Oriented Programming: ClassesInC++; ClassesVsStructs; Constructors; Destructors; Inheritence; Visibility; Create/InstantiateObjects; TernaryOperators; this keyword; ObjectLifetimeC++; CopyAndCopyConstructor;
+        Classes: const member variable, static variable in class, const static variable in class; Implement class with Raw Array as member and its size stored in variable      [Cherno]
+    12. static keyword: staticInC++; StaticForClassesAndStructs; LocalStatic; Singleton; ThreadSafeSingleton    [Cherno]
+    13. Optimization: ConstructorInitializerList(ConstructorsOfTheMembersInTheClass); Vectors; OptimizingVectors    [Cherno]
+    14. Move Semantics - no except:  In nutshell; L-Values; R-Values; L-Value References; R-Value References; Optimizations
+        IdeaOfMoveSemantic; noexcept; Need (2 situations - copy; Return Type Optimization) ; Example; MoveConstructor Vs MoveAssignmentOperator Vs MoveFunction
+        std::move() explicit R-Values as arguments;  Rule of 3 and Rule of 5    [Cherno] [MoveSemantics-noexcept.txt]
+    15. Polymorphic classes: VirtualFunctions - virtual, override; InterfacesInC++; VirtualDestructors    [Cherno]
+    16. Type Casting: Fundamentals, ImplicitConversion and explicit keyword; TypePunning; Unions; CastingInC++; DynamicCast   [cplusplus][Cherno]
+    17. CallbacksAndCallables: Fundamentals; FunctionPointers; Lambdas, mutables; Sorting   [Cherno]
+    18. OperatorOverloading: OperatorsAndOperatorOverloading; OperatorPrecedence and OrderOfEvaluation; friend and namespace    
+    19. Benchmarking: Timing; Benchmarking
+    20. Memory: new delete keywords; StackVsHeap; SmartPointers, SafetyInModernC++;
+    21. Track memory allocation and deallocation (easy way): Steps(2)? ChallengesInOverloading new and delete (5)
+    22. StandardTemplateLibrary: Template; DealingWithMultipleReturnValues (BestApproachBeforeC++17 and AfterC++17); StructBindings(sinceC++17): What- CleanerCode How? UseCase, Without; Iterators
+    23. ExceptionHandling: Exception handling 
+    24. RandomNumbersGenerators: TrueRandomNumbers; PseudoRandomNumberGenerator<cstdlib>; PseudoRandomNumberGenerator<random> 
+    25. Libraries: UsingLibariesInC++; DynamicLinking; MakingAndWorkingWithLibraries 
+    26. Cpp Miscellaneous: MostVexingParse; ResourceAcquisitionIsInitialization(RAII); LazyInitialization: InitializationUponFirstUse; FineGrainedLock and CoarseGrainedLock Appropriate Grain Size 
+
+II. C++ Good to have:
+    1. C++17 Storing data: std::optional; std::variant; std::any: [REFER TO THE DOCUMENTATION FOR METHODS] 
+    What - Why does it exist? Inner Workings? Methods? Use Case? 
+    std::any vs std::variant - Type Safety, Performance; AvoidCopyInAny
+    2. Precompiled Headers 
+
+III. C++ Set up and others:
+    1. CMakeProject: Setup C++ on Linux 
+    2. C++ in Mac: Setup C++ on Mac 
+    3. C++ in windows: Setup C++ in windows; DebuggingInMSVC; BestVisualStudioSetup; ConditionsAndActionBreakpoints 
+    4. Static analysis: StaticAnalysis; HowToLearnC++
+
+IV. Programs:  
+    1. PrimeNumbers 
+    2. Tail Call Optimization (TLO)
+    3. Size 0 of array 
+    4. Converting digit char to an integer  []
+
+
+
+
+
+
+
