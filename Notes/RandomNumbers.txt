@@ -1,0 +1,55 @@
+#### Just Remember the concept, check the documentation for syntaxes ####
+#### If effort is spent on the syntaxes, the whole purpose of programming is lost ####
+
+# Random Number Generators
+1. Pseudo Random Numbers Generator VS True Random Numbers Generator
+2. Pseudo Random Numbers Generator working:
+    Seed → Deterministic series of numbers; use the current time as a seed.
+    <random> : distribution(Generator_seeded)
+    <cstdlib>: rand(), srand()
+
+C++ standard libraries to generate random numbers.
+1. <random>: [PREFERRED] // https://cplusplus.com/reference/random/ 
+    - Generators: initialize with a seed and/or change the seed with seed()
+    - Distributions:
+        uniform_int_distribution::(constructor) 
+        uniform_real_distribution::(constructor)  
+        std::generate_canonical
+    - distribution(Generator_seeded)
+2. <cstdlib> rand() and srand(): [BAD PRACTISE]
+    - generates random number in the range [0, RAND_MAX]
+    - Range is adjusted by using % (modulus)
+    - srand(time(NULL));  // initializes/seeds the rand() where time() from <ctime>
+      rand(); 
+
+Important points:
+1. Pseudo Random Number Generator <cstdlib> <random>
+    Engines that use a particular algorithm to generate a series of random numbers. A seed produces a deterministic series of numbers. Generate random numbers by using the current time as the seed. The best approach will be to always seed with time just before generating the number. The usage depends on the application.
+    Seed1 → (S1) : N1, N2, N3, N4, ……… Nn
+    Seed2 → (S2) : M1, M2, M3, M4, ……… Mn
+    Seed3 → (S3) : K1, K2, K3, K4, ……… Kn
+    Seed1 → (S1) : N1, N2, N3, N4, ……… Nn
+
+2. True Random Number Generator <random>
+    Produces non-deterministic values, if supported. 
+
+3. rand() for floating point number [0, 1)
+    #define frand() ((double) rand() / (RAND_MAX + 1.0) )
+
+4. Usage of rand() is considered a bad practise
+    Because it generates a uniform distribution of the numbers in the range [0, RAND_MAX]. But if we need a number in a range [0, N) then we have to use the modulus operator as rand()%N but by doing this, we change the distribution of the numbers generated to non-uniform. 
+    Let's consider rand()%3 as an example to get the numbers in the range [0,2].
+    The probability of occurrence of 0 is:
+    (Total numbers that are multiples of 3 in the range [0,RAND_MAX]) / (RAND_MAX+1).
+    We will find that the probability of occurrence for each number in the range [0,2] is different since the total numbers in the range [0, RAND_MAX] satisfying the conditions for generating their respective numbers are different. Hence, the distribution becomes non-uniform.
+    For pseudo random generators, entropy = 0 else non-zero. random_device::entropy - C++ Reference 
+
+5. References:
+    cplusplus.com 
+    cppreference
+
+
+
+
+
+

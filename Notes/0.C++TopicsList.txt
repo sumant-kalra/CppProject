@@ -71,7 +71,7 @@ I.  C++ Must:
     21. Track memory allocation and deallocation (easy way): Steps(2)? ChallengesInOverloading new and delete (5)
     22. StandardTemplateLibrary: Template; DealingWithMultipleReturnValues (BestApproachBeforeC++17 and AfterC++17); StructBindings(sinceC++17): What- CleanerCode How? UseCase, Without; Iterators
     23. ExceptionHandling: Exception handling 
-    24. RandomNumbersGenerators: TrueRandomNumbers; PseudoRandomNumberGenerator<cstdlib>; PseudoRandomNumberGenerator<random> 
+    24. RandomNumbersGenerators: PseudoRandomNumberGeneratorVSTrueRandomNumbersGenerator; PseudoRandomNumberGenerator<cstdlib>; PseudoRandomNumberGenerator<random> 
     25. Libraries: UsingLibariesInC++; DynamicLinking; MakingAndWorkingWithLibraries 
     26. Cpp Miscellaneous: MostVexingParse; ResourceAcquisitionIsInitialization(RAII); LazyInitialization: InitializationUponFirstUse; FineGrainedLock and CoarseGrainedLock Appropriate Grain Size 
 
