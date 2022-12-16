@@ -1,12 +1,16 @@
 #### Just Remember the concept, check the documentation for syntaxes ####
 #### If effort is spent on the syntaxes, the whole purpose of programming is lost ####
 
+==================================================================================================================================================================
+
 # Random Number Generators
 1. Pseudo Random Numbers Generator VS True Random Numbers Generator
 2. Pseudo Random Numbers Generator working:
     Seed → Deterministic series of numbers; use the current time as a seed.
     <random> : distribution(Generator_seeded)
     <cstdlib>: rand(), srand()
+
+==================================================================================================================================================================
 
 C++ standard libraries to generate random numbers.
 1. <random>: [PREFERRED] // https://cplusplus.com/reference/random/ 

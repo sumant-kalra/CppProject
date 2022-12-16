@@ -1,0 +1,55 @@
+#### Just Remember the concept, check the documentation for syntaxes ####
+#### If effort is spent on the syntaxes, the whole purpose of programming is lost ####
+
+==================================================================================================================================================================
+
+Benchmarking performance in C++:
+    1. How to measure ?
+    2. __debugbreak
+    3. Careful about what is being measured(2)
+
+==================================================================================================================================================================
+1. Measuring the run time of a piece of code using <chrono> library
+2. code to add a breakpoint at an empty line
+    __debugbreak : visual studio
+    __builtin_trap : GNU
+    __builtin_debugtrap : Clang
+    __breakpoint : arm Keil
+3. Be careful about two aspects
+    Release Build: Benchmarking should be done in the release mode build and not in the debug build
+    Disassembly: Make sure that your code is converted to the machine code by checking in the assembly because the compiler may optimize your code by removing the piece if it can be resolved to some constants at the compile time.
+4. Important Links: 
+    https://www.geeksforgeeks.org/how-to-detect-operating-system-through-a-c-program/ 
+    https://learn.microsoft.com/en-us/cpp/preprocessor/predefined-macros?view=msvc-170
+    https://stackoverflow.com/questions/173618/is-there-a-portable-equivalent-to-debugbreak-debugbreak 
+    https://stackoverflow.com/questions/3390603/can-boolean-operators-be-used-with-the-preprocessor 
+
+1. Measuring the run time of a piece of code using <chrono> library
+
+    A. Usage:
+        1. Open <chrono> library http://www.cplusplus.com/reference/chrono/
+        2. Go to http://www.cplusplus.com/reference/chrono/high_resolution_clock/now/
+        3. Use now() function to create time points at the desired locations in the code - t_start, t_end; You may use auto keyword for the outcome of now()
+        4. Difference between the two time points return the duration(timeTaken) between the two.
+        5. std::chrono::duration<double> timeTaken = t_end - t_start; // timeTaken is duration object with period as std::ratio<1,1>
+        6. timeTakenInSeconds = timeTaken.count()
+        7. After this, the timeTakenInSeconds can be converted to any other period with simple arithmetic instead of using the duration_cast for casting between different duration objects
+
+    B. Details:[Redundant] 
+        1. <chrono> 3 items: (a)clock(3) class (b)duration class (c)time_point class (refer https://cplusplus.com/reference/chrono/ )
+        2. std::chrono::duration<Rep,std::ratio<>>
+            std::chrono::nanoseconds is a typedef for   std::chrono::duration<integerOfAtleast64bits, std::ratio<1,1000000000>> 
+            std::nano is a typedef for std::ratio<1, 1000000000>
+        3. Difference between the two time points return the duration(dur) between the two, that is std::chrono::duration class's object.
+           With the high_resolution_clock, t_end-t_start; returns the duration in std::chrono::nanoseconds
+        3. auto dur = t_end - t_start; (if we use auto for dur object, it will save the result in the same type as returned by the operation)
+           and dur.count() will return the time in nanoseconds, that is same as the below statement
+           std::chrono::nanoseconds dur= t_end - t_start;
+        4. To convert the duration between different periods, use std::chrono::duration_cast http://www.cplusplus.com/reference/chrono/duration_cast/
+           Duration cast is not needed, if the (t_end-t_start) is stored in an object of std::duration with floating point type as rep
+           Duration cast is needed if the (t_end-t_start) is stored in an object of std::duration with integral type as rep as the implicit conversions are not allowed for integral rep
+           Duration cast results in truncation if the conversion is done to a period with less precision
+           While using duration cast, remember automatic type detection for functions
+        5. Prefer floating point types as rep to avoid duration_cast, truncation and take the conversions in your hands
+           std::chrono::duration<double> timeTaken = t_end - t_start;
+           Default std::ratio for duration template class is seconds, that is if std::ratio is not provided. 
