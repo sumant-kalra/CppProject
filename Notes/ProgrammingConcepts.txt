@@ -1,0 +1,111 @@
+#### Just Remember the concept, check the documentation for syntaxes ####
+#### If effort is spent on the syntaxes, the whole purpose of programming is lost ####
+
+==================================================================================================================================================================
+Programming Concepts: Variables; Datatypes; FloatingPointNumbers(HowToDeal?); Functions; Headers; Conditions, branches; Loops; ControlFlow, Pointers; References
+
+https://cplusplus.com/doc/tutorial/variables/
+https://www.geeksforgeeks.org/data-types-in-c/  
+1. Variables Name: 
+    - Only alphabets, numbers and underscore are allowed; Name can not start from with a number; no keyword; no variable name length limit (C++);
+    - C++ libraries implementations use the variables name starting with __ and _  
+2. Datatypes:
+   The only real difference between the datatypes is their 'Size' (nBytes); Everything else can be eluded by using TypePunning through pointers;
+   However, the datatypes associate a certain behaviour to the variables when used in certain situations, 
+   for example - 'char' is an integer datatype, but when output through ostream, printed as a character;
+    C  :  https://www.geeksforgeeks.org/data-types-in-c/  
+    C++:  https://cplusplus.com/doc/tutorial/variables/
+   Commonly used primitive datatypes:
+    C  : char; signed char; unsigned char
+         int; short int; long int; unsigned int; unsigned short int; unsigned long int; 
+         float; double; long double
+         void 
+    C++: C + the following types and many more:
+         bool;
+         long long int; unsigned long long int;
+         void;
+         nullptr;
+   Important Points:
+   (a) C/C++ variable sizes depend upon the implementation of the respective datatype on the host machine. C/C++ standard defines the minimum requirements for the datatypes.
+       The size of the datatypes can not only vary with different architectures, but different compilers on the same host machine.
+   (b) C does not have boolean datatypes, and it normally uses integers for boolean testing; 0 = false; Non-0 = true
+   (c) SIZE: Use sizeof(<datatype>) to find the size in bytes of the datatype
+   (d) RANGE: Use <climits> and <cfloat> to find the range of the integer and floating point datatypes respectively.
+   (e) Printable chars are always positive. 
+
+3. Floating point numbers:
+    (a) Definition:
+        A number with a decimal point; can be represented as: 
+            N = <BaseValue>*<ScalingFactor>; 
+            In decimal number system, ScalingFactor is in the multiples of 10; 
+            In binary number system,  ScalingFactor is in the multiples of 2;
+    (b) Representations: 
+        1. Fixed Point Notation: ScalingFactor = 1
+        2. Scientific Notation: modulus(BaseValue) = [1.0, 10.0)   // [Preferred]
+        3. Normalized Notation: modulus(BaseValue) = [0.1, 1.0)    // Used for error analysis
+            N = <Sign> * f * 10^E;
+            f = mantissa, modulus(f) = [0.1, 1.0];
+            E = exponent;
+    (c) Significant Digits; Accuracy & Precision of a numerical value
+        1. Accuracy: Closeness of the measurement to the actual value; Given by the total number of accurate digits of the measurement.
+        2. Precision: Reproducibility and repeatability of a measurement system; Given by the least count of the mesurement system.
+        3. Significant Digits:
+            - "Any measurement that is made without knowing the uncertainity is completely meaningless"
+            - A numerical value at any stage of computation should also correctly depict the accuracy and the precision along with the value; 
+              Follow the rules defined by concept of significant digits for correct representation.
+            - The concepts of significant digits are formulated such that 
+                Accuracy: the total number of significant digits 
+                Precison: the least count from the least significant digit
+            - Always use the SCIENTIFIC NOTATION for the floating point numbers.
+    (d) Representation in computer memory:
+        Based on the normalized floating point notation; Total (1+x+y) bits; 
+        MSB : sign bit; x bits : exponent; y bits : mantissa 
+        - Limited number of bits for the <mantissa> limit the number of significant digits that can be stored for representing the floating point number.
+          float : can store at max 6 significant digits of the actual measurement. 
+          double: can store at max 15 significant digits of the actual measurement.
+          For the exact count of significant digits, refer to macros defined in <cfloat>
+    (e) Dealing with floating point numbers:
+        "Each intermediate computation gets rounded off (chopped/systematic) to the number of significant digits available to the datatype."
+        1. Numerical value --> Scientific Notation with the SignificantDigits depicting Accuracy and Precision of the value;
+        2. Store in appropriate datatypes: float, double, or long double; 
+        3. Relational operations based on the floating point arithmetic;
+        4. Final result output:
+            1. Print the minimum of maximum digits allowed by the floating point datatypes used, float, double, and long double; 
+               using setprecision() method in of stream objects in C++.
+            2. Establishing the accuracy and precision of the final result involves a detailed analysis of error propagation; Cant say anything without the analysis; 
+               Without the analysis, 
+               (a) Follow the best practices always, and 
+               (b) Just Hope for good!
+    (f) Important Points:
+        1. Any digits beyond the number of significant digits permitted by the floating point datatype are junk.
+        2. Approximations and Errors in Computing: [Refer to CH4 of Numerical Methods book]
+           - Different types of errors arise during the process of numerical computing that contribute to the total error in the final result.
+           - It is almost impossible to know the exact error in a computed result.
+             * Each floating point value stored in the memory gets rounded off (chopped/systematic round off) to the maximum significant digits permitted by the datatype.
+             * Even the numbers with significant digits < MaxSignificantDigits_Datatype can have errors in the mantissa storage because of conversion errors.
+             * The rounding off errors get accumulated to the existing errors at each computation step.,.. etc.
+           - However, there are approaches to have some estimation of the error in the final result. [Refer to the book]
+           - Always follow the best practices mentioned in the book; If error analysis is skipped then just hope for the best.  
+        3. "FLOATING POINT CALCULATIONS RESULTS MAY CHANGE SLIGHTLY WITH CHANGE IN THE ENVIRONMENT"
+            IEEE standard for floating point arithmetic:
+            On most computers, floating-point numbers are represented, and arithmetic performed according to, the IEEE standard. 
+            This is a carefully designed suggestion for how floating-point numbers should behave, and is aimed at providing good control of round-off errors and prescribing the behaviour when numbers reach the limits of the floating-point model. 
+            Regardless of the particular details of how the floating-point arithmetic is performed, however, the use of floatingpoint numbers inevitably leads to problems, and in this section we will consider some of those.
+            One should be aware of the fact the IEEE standard is extensive and complicated, and far from all computers and programming languages support the full standard. 
+            So if you are going to do serious floating-point calculations you should check how much of the IEEE standard that is supported in your environment.
+            In particular, you should realise that if you move your calculations from one environment to another, the results may change slightly because of different implementations of the IEEE standard. 
+        4. Non-Associativity of floating point addition: (Not valid for multiplication because errors are usually small (<<1), so their product becomes even smaller)
+            x + y + z != z + y + x
+        5. Remember computers perform arithmetic operations one at a time (Except the hardware supporting Fused Multiply Addition (FMA) Instructions) and from left to right. 
+        6. Loss of precision: [Follow the steps in (e)]
+            Example, 
+            float a = 5.12345e10
+            float b = 3.12
+            float result =  a + b - a; // Expected result = b; Actual result = 0
+            // Operating from left to right, 3.12 gets added to the digits beyond the significant digits of float a;
+        7. Relational operations on floating point numbers:
+            Always consider a tolerance! (Absolute or Relative for equality check!)
+        8. Misconception Clearance: 
+            - Each computation at the intermediate step gets rounded-off (chopped/systematic round-off) to the number of significant digits allowed by the datatype.
+            - The step to round off results to significant digits or least count of the least accurate/precise operand is SILLY. 
+              That was just a cheap trick/workaround against the detailed error analysis using absolute and relative errors; SO NEVER DO THAT! [Not applicable for computers.]

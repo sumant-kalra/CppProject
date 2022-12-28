@@ -46,7 +46,7 @@
 
 I.  C++ Must:
     1. Compilation and Linking: How C++ Works; Define Compilation process; Compilation (3 steps); Linker (3 kinds of errors)    [Cherno]
-    2. Programming Concepts: Variables, Datatypes; Functions; Headers; Conditions, branches; Loops; ControlFlow, Pointers; References   [Cherno] 
+    2. Programming Concepts: Variables; Datatypes; FloatingPointNumbers(HowToDeal?); Functions; Headers; Conditions, branches; Loops; ControlFlow, Pointers; References   [Cherno] 
     3. Enums: Enum and Enum Class [Cherno]
     4. Macros(SymbolicConstants or SymbolicNames): Macros-LoggingSystem: Debug, Release; Definining Macros in IDE/Build System; __LINE__, __FILE__, #x [cplusplus.com]; BreakpointWithACode; MacrosToIdentifyOS;    [Cherno] 
     5. Namespaces: auto keyword; using namespace std; Namespaces    [Cherno]
@@ -66,12 +66,12 @@ I.  C++ Must:
     16. Type Casting: Fundamentals, ImplicitConversion and explicit keyword; TypePunning; Unions; CastingInC++; DynamicCast   [cplusplus][Cherno]
     17. CallbacksAndCallables: Fundamentals; FunctionPointers; Lambdas, mutables; Sorting   [Cherno]
     18. OperatorOverloading: OperatorsAndOperatorOverloading; OperatorPrecedence and OrderOfEvaluation; friend and namespace    
-    19. Benchmarking: Timing; Benchmarking
+   [19] Benchmarking: Timing; Benchmarking
     20. Memory: new delete keywords; StackVsHeap; SmartPointers, SafetyInModernC++;
     21. Track memory allocation and deallocation (easy way): Steps(2)? ChallengesInOverloading new and delete (5)
     22. StandardTemplateLibrary: Template; DealingWithMultipleReturnValues (BestApproachBeforeC++17 and AfterC++17); StructBindings(sinceC++17): What- CleanerCode How? UseCase, Without; Iterators
     23. ExceptionHandling: Exception handling 
-    24. RandomNumbersGenerators: PseudoRandomNumberGeneratorVSTrueRandomNumbersGenerator; PseudoRandomNumberGenerator<cstdlib>; PseudoRandomNumberGenerator<random> 
+   [24] RandomNumbersGenerators: PseudoRandomNumberGeneratorVSTrueRandomNumbersGenerator; PseudoRandomNumberGenerator<cstdlib>; PseudoRandomNumberGenerator<random> 
     25. Libraries: UsingLibariesInC++; DynamicLinking; MakingAndWorkingWithLibraries 
     26. Cpp Miscellaneous: MostVexingParse; ResourceAcquisitionIsInitialization(RAII); LazyInitialization: InitializationUponFirstUse; FineGrainedLock and CoarseGrainedLock Appropriate Grain Size 
 
