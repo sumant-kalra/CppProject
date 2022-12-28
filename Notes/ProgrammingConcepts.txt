@@ -64,7 +64,8 @@ https://www.geeksforgeeks.org/data-types-in-c/
           float : can store at max 6 significant digits of the actual measurement. 
           double: can store at max 15 significant digits of the actual measurement.
           For the exact count of significant digits, refer to macros defined in <cfloat>
-    (e) Dealing with floating point numbers:
+    (e) Dealing with floating point numbers: 
+        [NumberOfSignificantDigits_Datatype]
         "Each intermediate computation gets rounded off (chopped/systematic) to the number of significant digits available to the datatype."
         1. Numerical value --> Scientific Notation with the SignificantDigits depicting Accuracy and Precision of the value;
         2. Store in appropriate datatypes: float, double, or long double; 
@@ -83,7 +84,7 @@ https://www.geeksforgeeks.org/data-types-in-c/
            - It is almost impossible to know the exact error in a computed result.
              * Each floating point value stored in the memory gets rounded off (chopped/systematic round off) to the maximum significant digits permitted by the datatype.
              * Even the numbers with significant digits < MaxSignificantDigits_Datatype can have errors in the mantissa storage because of conversion errors.
-             * The rounding off errors get accumulated to the existing errors at each computation step.,.. etc.
+             * The rounding off errors get accumulated to the existing errors at each computation step,.. etc.
            - However, there are approaches to have some estimation of the error in the final result. [Refer to the book]
            - Always follow the best practices mentioned in the book; If error analysis is skipped then just hope for the best.  
         3. "FLOATING POINT CALCULATIONS RESULTS MAY CHANGE SLIGHTLY WITH CHANGE IN THE ENVIRONMENT"
